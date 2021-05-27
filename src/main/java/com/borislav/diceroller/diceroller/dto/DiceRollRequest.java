@@ -1,11 +1,12 @@
 package com.borislav.diceroller.diceroller.dto;
 
-import lombok.AllArgsConstructor;
+import com.borislav.diceroller.diceroller.model.DiceRollSimulation;
+import lombok.RequiredArgsConstructor;
 import lombok.Getter;
 
 import javax.validation.constraints.Min;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Getter
 public class DiceRollRequest {
     @Min(1)
@@ -14,4 +15,11 @@ public class DiceRollRequest {
     private final int rolls;
     @Min(4)
     private final int diceSides;
+
+    public DiceRollSimulation toDiceRollSimulationModel() {
+        return DiceRollSimulation.builder()
+                .dices(dices)
+                .rolls(rolls)
+                .diceSides(diceSides).build();
+    }
 }

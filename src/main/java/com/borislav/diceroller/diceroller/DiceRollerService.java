@@ -1,20 +1,37 @@
 package com.borislav.diceroller.diceroller;
 
 import com.borislav.diceroller.diceroller.dto.DiceRollRequest;
+import com.borislav.diceroller.diceroller.dto.DiceRollResponse;
+import com.borislav.diceroller.diceroller.dto.DiceRollStatistics;
+import com.borislav.diceroller.diceroller.model.DiceRollSimulation;
+import com.borislav.diceroller.diceroller.model.SimulationResult;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class DiceRollerService {
-    List<DiceRollStatistics> roll(DiceRollRequest request) {
+
+    private final DiceRollSimulationRepository repository;
+
+    @Transactional
+    public DiceRollResponse roll(DiceRollRequest request) {
+        Map<Integer, Integer> statistics = performSimulation(request);
+
+        storeSimulationResults(request, statistics);
+
+        return toDiceRollResponse(statistics);
+    }
+
+    private Map<Integer, Integer> performSimulation(DiceRollRequest request) {
         Map<Integer, Integer> statistics = new HashMap<>();
 
         for(int rollNum = 0; rollNum < request.getRolls(); rollNum++){
@@ -25,14 +42,23 @@ public class DiceRollerService {
 
             statistics.merge(rollResult, 1, Integer::sum);
         }
-
-        return toDiceRollResult(statistics);
+        return statistics;
     }
 
-    private List<DiceRollStatistics> toDiceRollResult(Map<Integer, Integer> statistics) {
-        return statistics.entrySet().stream()
+    private void storeSimulationResults(DiceRollRequest request, Map<Integer, Integer> statistics) {
+        DiceRollSimulation simulation = request.toDiceRollSimulationModel();
+        statistics.forEach((dicesSum, totalRolls) -> simulation.addResult(SimulationResult.builder()
+                .dicesSum(dicesSum)
+                .totalRolls(totalRolls)
+                .build()));
+
+        repository.save(simulation);
+    }
+
+    private DiceRollResponse toDiceRollResponse(Map<Integer, Integer> statistics) {
+        return new DiceRollResponse(statistics.entrySet().stream()
                 .map(entry -> new DiceRollStatistics(entry.getKey(), entry.getValue()))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
     }
 
     private int rollDice(int diceSides) {
