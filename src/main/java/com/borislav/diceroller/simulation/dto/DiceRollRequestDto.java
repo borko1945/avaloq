@@ -1,6 +1,6 @@
-package com.borislav.diceroller.diceroller.dto;
+package com.borislav.diceroller.simulation.dto;
 
-import com.borislav.diceroller.diceroller.model.DiceRollSimulation;
+import com.borislav.diceroller.simulation.model.DiceRollSimulation;
 import lombok.RequiredArgsConstructor;
 import lombok.Getter;
 
@@ -8,7 +8,7 @@ import javax.validation.constraints.Min;
 
 @RequiredArgsConstructor
 @Getter
-public class DiceRollRequest {
+public class DiceRollRequestDto {
     @Min(1)
     private final int dices;
     @Min(1)

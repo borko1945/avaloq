@@ -1,10 +1,10 @@
-package com.borislav.diceroller.diceroller;
+package com.borislav.diceroller.simulation;
 
-import com.borislav.diceroller.diceroller.dto.DiceRollRequest;
-import com.borislav.diceroller.diceroller.dto.DiceRollResponse;
-import com.borislav.diceroller.diceroller.dto.DiceRollStatistics;
-import com.borislav.diceroller.diceroller.model.DiceRollSimulation;
-import com.borislav.diceroller.diceroller.model.SimulationResult;
+import com.borislav.diceroller.simulation.dto.DiceRollRequestDto;
+import com.borislav.diceroller.simulation.dto.DiceRollResponseDto;
+import com.borislav.diceroller.simulation.dto.DiceRollStatisticsDto;
+import com.borislav.diceroller.simulation.model.DiceRollSimulation;
+import com.borislav.diceroller.simulation.model.SimulationResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,12 +18,12 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class DiceRollerService {
+public class SimulationService {
 
-    private final DiceRollSimulationRepository repository;
+    private final SimulationRepository repository;
 
     @Transactional
-    public DiceRollResponse roll(DiceRollRequest request) {
+    public DiceRollResponseDto roll(DiceRollRequestDto request) {
         Map<Integer, Integer> statistics = performSimulation(request);
 
         storeSimulationResults(request, statistics);
@@ -31,7 +31,7 @@ public class DiceRollerService {
         return toDiceRollResponse(statistics);
     }
 
-    private Map<Integer, Integer> performSimulation(DiceRollRequest request) {
+    private Map<Integer, Integer> performSimulation(DiceRollRequestDto request) {
         Map<Integer, Integer> statistics = new HashMap<>();
 
         for(int rollNum = 0; rollNum < request.getRolls(); rollNum++){
@@ -45,7 +45,7 @@ public class DiceRollerService {
         return statistics;
     }
 
-    private void storeSimulationResults(DiceRollRequest request, Map<Integer, Integer> statistics) {
+    private void storeSimulationResults(DiceRollRequestDto request, Map<Integer, Integer> statistics) {
         DiceRollSimulation simulation = request.toDiceRollSimulationModel();
         statistics.forEach((dicesSum, totalRolls) -> simulation.addResult(SimulationResult.builder()
                 .dicesSum(dicesSum)
@@ -55,9 +55,9 @@ public class DiceRollerService {
         repository.save(simulation);
     }
 
-    private DiceRollResponse toDiceRollResponse(Map<Integer, Integer> statistics) {
-        return new DiceRollResponse(statistics.entrySet().stream()
-                .map(entry -> new DiceRollStatistics(entry.getKey(), entry.getValue()))
+    private DiceRollResponseDto toDiceRollResponse(Map<Integer, Integer> statistics) {
+        return new DiceRollResponseDto(statistics.entrySet().stream()
+                .map(entry -> new DiceRollStatisticsDto(entry.getKey(), entry.getValue()))
                 .collect(Collectors.toList()));
     }
 

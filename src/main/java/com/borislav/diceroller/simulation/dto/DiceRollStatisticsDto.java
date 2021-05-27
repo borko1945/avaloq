@@ -1,4 +1,4 @@
-package com.borislav.diceroller.diceroller.dto;
+package com.borislav.diceroller.simulation.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-public class DiceRollStatistics {
+public class DiceRollStatisticsDto {
     @JsonProperty
     private final int dicesSum;
 

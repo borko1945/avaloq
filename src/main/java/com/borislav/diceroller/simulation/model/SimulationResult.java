@@ -1,4 +1,4 @@
-package com.borislav.diceroller.diceroller.model;
+package com.borislav.diceroller.simulation.model;
 
 import lombok.Builder;
 import lombok.Setter;

@@ -1,5 +1,7 @@
 package com.borislav.diceroller.exception;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -14,22 +16,19 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ValidationException.class)
     ErrorMessage exceptionHandler(ValidationException e) {
-        return new ErrorMessage(HttpStatus.BAD_REQUEST, e.getMessage());
+        return new ErrorMessage(HttpStatus.BAD_REQUEST.value(), e.getMessage());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ConstraintViolationException.class)
     ErrorMessage exceptionHandler(ConstraintViolationException e) {
-        return new ErrorMessage(HttpStatus.BAD_REQUEST, e.getMessage());
+        return new ErrorMessage(HttpStatus.BAD_REQUEST.value(), e.getMessage());
     }
 
+    @RequiredArgsConstructor
+    @Getter
     public static class ErrorMessage {
-        private HttpStatus code;
-        private String message;
-
-        public ErrorMessage(HttpStatus code, String message) {
-            this.code = code;
-            this.message = message;
-        }
+        private final int code;
+        private final String message;
     }
 }
