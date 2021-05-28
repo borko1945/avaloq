@@ -1,12 +1,14 @@
 package com.borislav.diceroller.simulation.dto;
 
 import com.borislav.diceroller.simulation.model.DiceRollSimulation;
+import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.Getter;
 
 import javax.validation.constraints.Min;
 
 @RequiredArgsConstructor
+@EqualsAndHashCode
 @Getter
 public class DiceRollRequestDto {
     @Min(1)

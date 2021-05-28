@@ -55,7 +55,7 @@ public class SimulationQueryService {
     }
 
     private double roundDouble(double value) {
-        return BigDecimal.valueOf(value).setScale(4, RoundingMode.HALF_UP).doubleValue();
+        return BigDecimal.valueOf(value).setScale(2, RoundingMode.FLOOR).doubleValue();
     }
 
     private Map<Integer, Integer> getTotalRollsPerDiceSum(List<DiceRollSimulation> simulations) {

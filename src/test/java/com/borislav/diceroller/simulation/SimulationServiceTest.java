@@ -33,14 +33,14 @@ class SimulationServiceTest {
     ArgumentCaptor<DiceRollSimulation> simulationEntityCaptor;
 
     @InjectMocks
-    private SimulationService testMe;
+    private SimulationService service;
 
     @Test
     void roll_invokedWith_3Dices_10Rolls_30DiceRollsAreGenerated() {
         DiceRollRequestDto request = new DiceRollRequestDto(3, 10, 5);
         when(generator.rollDice(5)).thenReturn(5);
 
-        testMe.roll(request);
+        service.roll(request);
 
         verify(generator, times(30)).rollDice(5);
     }
@@ -50,10 +50,9 @@ class SimulationServiceTest {
         DiceRollRequestDto request = new DiceRollRequestDto(3, 3, 6);
         when(generator.rollDice(6)).thenReturn(3,3,3,1,2,6,5,6,1);
 
-        DiceRollResponseDto actualDto = testMe.roll(request);
+        DiceRollResponseDto actualDto = service.roll(request);
 
         verify(repository, times(1)).save(simulationEntityCaptor.capture());
-
         verifyDbEntity();
         verifyDto(request, actualDto);
     }

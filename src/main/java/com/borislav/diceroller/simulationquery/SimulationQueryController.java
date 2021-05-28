@@ -16,7 +16,7 @@ public class SimulationQueryController {
     private final SimulationQueryService simulationQueryService;
 
     @GetMapping("/simulations")
-    public SimulationPerDiceAndDiceSidesResponseDto getByDiceAndDiceSides() {
+    public SimulationPerDiceAndDiceSidesResponseDto getSimulationsByDiceAndDiceSides() {
         return simulationQueryService.getTotalSimulationsGroupedByDiceAndDiceNumber();
     }
 
