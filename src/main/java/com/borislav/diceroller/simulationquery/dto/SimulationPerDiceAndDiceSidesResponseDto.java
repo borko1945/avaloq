@@ -7,6 +7,6 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Getter
-public class SimulationQueryListResponseDto<T> {
-    private final List<T> list;
+public class SimulationPerDiceAndDiceSidesResponseDto {
+    private final List<SimulationsPerDiceAndDiceSidesDto> result;
 }

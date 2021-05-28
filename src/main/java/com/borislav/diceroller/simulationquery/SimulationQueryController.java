@@ -1,7 +1,7 @@
 package com.borislav.diceroller.simulationquery;
 
-import com.borislav.diceroller.simulationquery.dto.SimulationQueryListResponseDto;
-import com.borislav.diceroller.simulationquery.dto.SimulationsPerDiceAndDiceSidesDto;
+import com.borislav.diceroller.simulationquery.dto.SimulationDistributionResponseDto;
+import com.borislav.diceroller.simulationquery.dto.SimulationPerDiceAndDiceSidesResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,12 +16,12 @@ public class SimulationQueryController {
     private final SimulationQueryService simulationQueryService;
 
     @GetMapping("/simulations")
-    public SimulationQueryListResponseDto<SimulationsPerDiceAndDiceSidesDto> getByDiceAndDiceSides() {
+    public SimulationPerDiceAndDiceSidesResponseDto getByDiceAndDiceSides() {
         return simulationQueryService.getTotalSimulationsGroupedByDiceAndDiceNumber();
     }
 
     @GetMapping("/simulations/distribution")
-    public SimulationQueryListResponseDto getByDiceAndDiceSides(@RequestParam int dices, @RequestParam int diceSides) {
+    public SimulationDistributionResponseDto getByDiceAndDiceSides(@RequestParam int dices, @RequestParam int diceSides) {
         return simulationQueryService.getDistributionByDicesAndDiceSides(dices, diceSides);
     }
 }

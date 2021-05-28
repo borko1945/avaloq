@@ -2,9 +2,8 @@ package com.borislav.diceroller.simulation.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -22,10 +21,9 @@ import java.util.List;
 @Table( name = "dice_roll_simulation",
         indexes = { @Index(name = "idx_dices_dicesides", columnList = "dices, dice_sides") })
 @Builder
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 public class DiceRollSimulation {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Id

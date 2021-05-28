@@ -12,15 +12,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class SimulationService {
+class SimulationService {
 
     private final SimulationRepository repository;
+    private final SimulationDiceRollGenerator generator;
 
     @Transactional
     public DiceRollResponseDto roll(DiceRollRequestDto request) {
@@ -28,7 +28,7 @@ public class SimulationService {
 
         storeSimulationResults(request, statistics);
 
-        return toDiceRollResponse(statistics);
+        return toDiceRollResponse(request, statistics);
     }
 
     private Map<Integer, Integer> performSimulation(DiceRollRequestDto request) {
@@ -37,7 +37,7 @@ public class SimulationService {
         for(int rollNum = 0; rollNum < request.getRolls(); rollNum++){
             int rollResult = 0;
             for (int i = 0; i < request.getDices(); i++) {
-                rollResult += rollDice(request.getDiceSides());
+                rollResult += generator.rollDice(request.getDiceSides());
             }
 
             statistics.merge(rollResult, 1, Integer::sum);
@@ -55,14 +55,13 @@ public class SimulationService {
         repository.save(simulation);
     }
 
-    private DiceRollResponseDto toDiceRollResponse(Map<Integer, Integer> statistics) {
-        return new DiceRollResponseDto(statistics.entrySet().stream()
+    private DiceRollResponseDto toDiceRollResponse(DiceRollRequestDto request, Map<Integer, Integer> statistics) {
+        return new DiceRollResponseDto(
+                request.getDices(),
+                request.getRolls(),
+                request.getDiceSides(),
+                statistics.entrySet().stream()
                 .map(entry -> new DiceRollStatisticsDto(entry.getKey(), entry.getValue()))
                 .collect(Collectors.toList()));
-    }
-
-    private int rollDice(int diceSides) {
-        Random ran = new Random();
-        return ran.nextInt(diceSides) + 1;
     }
 }
