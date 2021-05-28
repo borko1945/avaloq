@@ -49,7 +49,7 @@ class SimulationQueryControllerTest {
                 .andExpect(jsonPath("$.result",hasSize(1)))
                 .andExpect(jsonPath("$.result[0].dices").value(3))
                 .andExpect(jsonPath("$.result[0].diceSides").value(6))
-                .andExpect(jsonPath("$.result[0].dicesSum").value(18))
+                .andExpect(jsonPath("$.result[0].totalSimulations").value(18))
                 .andExpect(jsonPath("$.result[0].totalRolls").value(50));
 
         verify(simulationQueryService, times(1)).getTotalSimulationsGroupedByDiceAndDiceNumber();
