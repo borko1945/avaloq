@@ -5,9 +5,8 @@ import com.borislav.diceroller.simulationquery.dto.SimulationsPerDiceAndDiceSide
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController()
 @RequestMapping("/api")
@@ -21,8 +20,8 @@ public class SimulationQueryController {
         return simulationQueryService.getTotalSimulationsGroupedByDiceAndDiceNumber();
     }
 
-//    @GetMapping("simulations")
-//    public void getByDiceAndDiceSides(@RequestParam int dices, @RequestParam int diceSides) {
-//
-//    }
+    @GetMapping("/simulations/distribution")
+    public SimulationQueryListResponseDto getByDiceAndDiceSides(@RequestParam int dices, @RequestParam int diceSides) {
+        return simulationQueryService.getDistributionByDicesAndDiceSides(dices, diceSides);
+    }
 }

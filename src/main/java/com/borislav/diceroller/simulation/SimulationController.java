@@ -18,7 +18,7 @@ import javax.validation.constraints.Min;
 public class SimulationController {
     private final SimulationService simulationService;
 
-    @PostMapping("/dice-roller")
+    @PostMapping("/simulations")
     public DiceRollResponseDto createDiceRoll(@RequestParam(defaultValue = "3") @Min(1) int dices,
                                               @RequestParam(defaultValue = "100") @Min(1) int rolls,
                                               @RequestParam(defaultValue = "6") @Min(4) int diceSides) {

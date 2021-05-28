@@ -1,6 +1,9 @@
 package com.borislav.diceroller.simulation.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Column;
@@ -14,6 +17,9 @@ import javax.persistence.Table;
 @Entity(name = "SimulationResult")
 @Table(name = "simulation_result")
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
 public class SimulationResult {
     @GeneratedValue
     @Id
