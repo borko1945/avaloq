@@ -17,7 +17,7 @@ Following query operations on stored data could be performed:
 - for a given dice number–dice side combination, return the relative distribution, compared to the total rolls, for all
   the simulations
 
-###Architecture and Decisions
+##Architecture and Decisions
 - Gradle based SpringBoot2/Java11 with embedded Tomcat
 - Rest communication
 - Java validation used for validation
@@ -28,7 +28,7 @@ Following query operations on stored data could be performed:
 - A JPQL query is used for performance purposes
 - Tests for critical scenarios and components are provided
 
-###Assumptions
+##Assumptions
 - assuming results(possible dices sum) per simulation are few but not a lot. If a lot, more performant hibernate relations and technics could be used
 - distribution value is formatted and rounded like in the assessment(Ex: 3.666612 -> 3.66)
 - when performing simulation default values will be used if not provided - check above in the document 
